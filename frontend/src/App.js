@@ -1117,7 +1117,9 @@ function RiskPrediction() {
           {riskAssessment ? (
             <div className="bg-orange-50 border border-orange-200 rounded-lg p-6" data-testid="risk-assessment-result">
               <h3 className="text-lg font-semibold text-orange-900 mb-3">Risk Assessment</h3>
-              <div className="text-gray-700 whitespace-pre-wrap">{riskAssessment}</div>
+              <div className="markdown-content">
+                <ReactMarkdown>{riskAssessment}</ReactMarkdown>
+              </div>
             </div>
           ) : (
             <div className="flex items-center justify-center h-full text-gray-400">
