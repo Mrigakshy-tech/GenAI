@@ -476,6 +476,34 @@ async def analyze_medical_image(
         
         return {
             "analysis": analysis,
+
+
+# ===========================
+# VOICE INPUT ENDPOINT
+# ===========================
+
+@api_router.post("/voice/transcribe")
+async def transcribe_audio(file: UploadFile = File(...)):
+    """Transcribe audio to text (placeholder for Web Speech API frontend implementation)"""
+    try:
+        # Note: This endpoint is a placeholder. The actual speech-to-text
+        # will be handled by the browser's Web Speech API on the frontend
+        # for real-time transcription without server load.
+        
+        # If server-side transcription is needed in the future, 
+        # integrate with services like OpenAI Whisper API
+        
+        contents = await file.read()
+        
+        return {
+            "transcription": "Voice transcription is handled client-side using Web Speech API",
+            "note": "This endpoint can be extended for server-side transcription if needed",
+            "file_size": len(contents),
+            "filename": file.filename
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
             "filename": file.filename,
             "image_type": image_type,
             "disclaimer": "This AI analysis is for informational purposes only. Please consult a qualified healthcare professional for accurate medical diagnosis."
