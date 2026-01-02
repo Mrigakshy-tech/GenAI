@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import "@/App.css";
 import axios from "axios";
-import { Activity, Brain, Stethoscope, Heart, MessageCircle, Pill, Calendar, TrendingUp, AlertCircle, CheckCircle, Send, Upload, Plus, X, LogOut, User } from "lucide-react";
+import { Activity, Brain, Stethoscope, Heart, MessageCircle, Pill, Calendar, TrendingUp, AlertCircle, CheckCircle, Send, Upload, Plus, X, LogOut, User, Mic, MicOff, Image as ImageIcon } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Login from "./components/Login";
