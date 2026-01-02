@@ -1,16 +1,50 @@
 import { useState, useEffect } from "react";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import "@/App.css";
 import axios from "axios";
-import { Activity, Brain, Stethoscope, Heart, MessageCircle, Pill, Calendar, TrendingUp, AlertCircle, CheckCircle, Send, Upload, Plus, X } from "lucide-react";
+import { Activity, Brain, Stethoscope, Heart, MessageCircle, Pill, Calendar, TrendingUp, AlertCircle, CheckCircle, Send, Upload, Plus, X, LogOut, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import Login from "./components/Login";
+import AuthCallback from "./components/AuthCallback";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 function App() {
+  const location = useLocation();
+  
+  // Check URL fragment for session_id synchronously during render
+  if (location.hash?.includes('session_id=')) {
+    return <AuthCallback />;
+  }
+  
+  return (
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/dashboard" element={
+        <ProtectedRoute>
+          {({ user }) => <Dashboard user={user} />}
+        </ProtectedRoute>
+      } />
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+    </Routes>
+  );
+}
+
+function Dashboard({ user }) {
   const [activeModule, setActiveModule] = useState("medical");
-  const [userId, setUserId] = useState("user-" + Math.random().toString(36).substr(2, 9));
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(`${API}/auth/logout`, {}, { withCredentials: true });
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Logout error:", error);
+      window.location.href = "/login";
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
