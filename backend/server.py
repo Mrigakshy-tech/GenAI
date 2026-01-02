@@ -472,26 +472,11 @@ async def get_patient_dashboard(user_id: str):
         {"user_id": user_id}, {"_id": 0}
     ).sort("timestamp", -1).limit(7).to_list(7)
     
-    # Get AI health summary
-    system_message = """You are a personal health assistant AI. Provide a brief health summary 
-    and personalized recommendations based on the user's data."""
-    
-    user_message = f"""
-    Recent Medications: {len(medications)} tracked
-    Recent Health Metrics: {len(metrics)} recorded
-    Recent Mood Entries: {len(moods)} tracked
-    
-    Provide a brief health summary and recommendations.
-    """
-    
-    summary = await get_ai_response(system_message, user_message, f"dashboard-{user_id}")
-    
     return {
         "user_id": user_id,
         "medications": medications,
         "health_metrics": metrics,
-        "mood_history": moods,
-        "ai_summary": summary
+        "mood_history": moods
     }
 
 
