@@ -16,8 +16,9 @@ function Login() {
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 rounded-2xl mb-4">
               <Heart className="h-12 w-12 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">MediGenix AI</h1>
-            <p className="text-gray-600 text-center">Comprehensive AI-Powered Healthcare Solutions</p>
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">MediGenix AI</h1>
+            <p className="text-gray-600 text-center text-sm sm:text-base">Comprehensive AI-Powered Healthcare Solutions</p>
+            <p className="text-gray-500 text-center text-xs mt-2">Your Personal Healthcare Assistant</p>
           </div>
 
           {/* Benefits */}
@@ -40,6 +41,12 @@ function Login() {
               </div>
               <p className="text-sm text-gray-700">Medication management and health monitoring</p>
             </div>
+            <div className="flex items-start space-x-3">
+              <div className="flex-shrink-0 w-6 h-6 bg-red-100 rounded-full flex items-center justify-center mt-0.5">
+                <span className="text-red-600 text-sm font-bold">✓</span>
+              </div>
+              <p className="text-sm text-gray-700">Wearable device integration and image analysis</p>
+            </div>
           </div>
 
           {/* Login Button */}
@@ -61,7 +68,7 @@ function Login() {
 
           {/* Terms */}
           <p className="text-xs text-gray-500 text-center mt-6">
-            By continuing, you agree to our Terms of Service and Privacy Policy
+            By continuing, you agree to MediGenix AI Terms of Service and Privacy Policy
           </p>
         </div>
       </div>

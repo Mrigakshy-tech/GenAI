@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import "@/App.css";
 import axios from "axios";
-import { Activity, Brain, Stethoscope, Heart, MessageCircle, Pill, Calendar, TrendingUp, AlertCircle, CheckCircle, Send, Upload, Plus, X, LogOut, User, Mic, MicOff, Image as ImageIcon } from "lucide-react";
+import { Activity, Brain, Stethoscope, Heart, MessageCircle, Pill, Calendar, TrendingUp, AlertCircle, CheckCircle, Send, Upload, Plus, X, LogOut, User, Mic, MicOff, Image as ImageIcon, Watch } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Login from "./components/Login";
@@ -1918,6 +1918,7 @@ function MedicationTracker({ userId }) {
 function VitalsMonitor({ userId }) {
   const [metrics, setMetrics] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [showWearableSync, setShowWearableSync] = useState(false);
   const [formData, setFormData] = useState({
     metric_type: "blood_pressure",
     value: "",
@@ -1934,6 +1935,18 @@ function VitalsMonitor({ userId }) {
       setMetrics(response.data.metrics || []);
     } catch (error) {
       console.error("Error fetching metrics:", error);
+    }
+  };
+
+  const syncWearableData = async (deviceType) => {
+    try {
+      // Placeholder for wearable sync
+      // In production, this would trigger OAuth flow for Apple Health/Fitbit
+      alert(`Wearable sync for ${deviceType} initiated. In production, this would connect to your ${deviceType} account.`);
+      setShowWearableSync(false);
+    } catch (error) {
+      console.error("Error syncing wearable:", error);
+      alert("Failed to sync wearable data.");
     }
   };
 
@@ -1966,15 +1979,75 @@ function VitalsMonitor({ userId }) {
     <div className="bg-white rounded-xl shadow-lg p-6" data-testid="vitals-monitor">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-semibold text-gray-900">Health Vitals</h3>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center space-x-2"
-          data-testid="add-vital-toggle-btn"
-        >
-          <Plus className="h-5 w-5" />
-          <span>Record Vital</span>
-        </button>
+        <div className="flex space-x-2">
+          <button
+            onClick={() => setShowWearableSync(!showWearableSync)}
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center space-x-2"
+            data-testid="wearable-sync-toggle-btn"
+          >
+            <Activity className="h-5 w-5" />
+            <span className="hidden sm:inline">Sync Device</span>
+          </button>
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center space-x-2"
+            data-testid="add-vital-toggle-btn"
+          >
+            <Plus className="h-5 w-5" />
+            <span className="hidden sm:inline">Record Vital</span>
+          </button>
+        </div>
       </div>
+
+      {showWearableSync && (
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <h4 className="font-semibold text-gray-900 mb-3">Connect Wearable Device</h4>
+          <p className="text-sm text-gray-600 mb-4">
+            Sync health data automatically from your wearable devices
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <button
+              onClick={() => syncWearableData('Apple Health')}
+              className="px-4 py-4 bg-white border-2 border-gray-300 rounded-lg hover:border-green-500 hover:shadow-md transition-all"
+            >
+              <div className="flex flex-col items-center space-y-2">
+                <Heart className="h-8 w-8 text-red-500" />
+                <div className="text-center">
+                  <p className="font-medium text-sm">Apple Health</p>
+                  <p className="text-xs text-gray-500">HealthKit</p>
+                </div>
+              </div>
+            </button>
+            <button
+              onClick={() => syncWearableData('Fitbit')}
+              className="px-4 py-4 bg-white border-2 border-gray-300 rounded-lg hover:border-green-500 hover:shadow-md transition-all"
+            >
+              <div className="flex flex-col items-center space-y-2">
+                <Watch className="h-8 w-8 text-teal-600" />
+                <div className="text-center">
+                  <p className="font-medium text-sm">Fitbit</p>
+                  <p className="text-xs text-gray-500">Smartwatch</p>
+                </div>
+              </div>
+            </button>
+            <button
+              onClick={() => syncWearableData('Google Fit')}
+              className="px-4 py-4 bg-white border-2 border-gray-300 rounded-lg hover:border-green-500 hover:shadow-md transition-all"
+            >
+              <div className="flex flex-col items-center space-y-2">
+                <TrendingUp className="h-8 w-8 text-blue-600" />
+                <div className="text-center">
+                  <p className="font-medium text-sm">Google Fit</p>
+                  <p className="text-xs text-gray-500">Fitness Tracking</p>
+                </div>
+              </div>
+            </button>
+          </div>
+          <p className="text-xs text-gray-500 mt-3 text-center">
+            Note: OAuth integration required for production use
+          </p>
+        </div>
+      )}
 
       {showForm && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">

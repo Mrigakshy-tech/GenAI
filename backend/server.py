@@ -476,6 +476,13 @@ async def analyze_medical_image(
         
         return {
             "analysis": analysis,
+            "filename": file.filename,
+            "image_type": image_type,
+            "disclaimer": "This AI analysis is for informational purposes only. Please consult a qualified healthcare professional for accurate medical diagnosis."
+        }
+    except Exception as e:
+        logging.error(f"Image analysis error: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 # ===========================
@@ -504,14 +511,91 @@ async def transcribe_audio(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-            "filename": file.filename,
-            "image_type": image_type,
-            "disclaimer": "This AI analysis is for informational purposes only. Please consult a qualified healthcare professional for accurate medical diagnosis."
-        }
-    except Exception as e:
-        logging.error(f"Image analysis error: {str(e)}")
-        raise HTTPException(status_code=400, detail=str(e))
 
+
+# ===========================
+# WEARABLE DEVICE INTEGRATION
+# ===========================
+
+@api_router.post("/wearables/sync")
+async def sync_wearable_data(request: Request, session_token: Optional[str] = Cookie(None)):
+    """Sync data from wearable devices"""
+    user = await get_current_user(request, session_token)
+    
+    data = await request.json()
+    device_type = data.get("device_type")  # apple_health, fitbit, manual
+    metrics = data.get("metrics", [])  # List of health metrics
+    
+    saved_count = 0
+    for metric_data in metrics:
+        metric = HealthMetric(
+            user_id=user.user_id,
+            metric_type=metric_data["type"],
+            value=metric_data["value"],
+            unit=metric_data["unit"]
+        )
+        doc = metric.model_dump()
+        doc['timestamp'] = doc['timestamp'].isoformat()
+        await db.health_metrics.insert_one(doc)
+        saved_count += 1
+    
+    return {
+        "message": f"Successfully synced {saved_count} metrics",
+        "device_type": device_type,
+        "synced_count": saved_count
+    }
+
+
+@api_router.get("/wearables/devices")
+async def get_connected_devices(request: Request, session_token: Optional[str] = Cookie(None)):
+    """Get list of connected wearable devices for user"""
+    user = await get_current_user(request, session_token)
+    
+    # Check if user has any health metrics (indicates device usage)
+    recent_metrics = await db.health_metrics.find(
+        {"user_id": user.user_id}, {"_id": 0}
+    ).sort("timestamp", -1).limit(10).to_list(10)
+    
+    # For MVP: Return manual entry as default
+    # Can be extended to detect Apple Health/Fitbit based on metric patterns
+    return {
+        "devices": [
+            {
+                "type": "manual",
+                "name": "Manual Entry",
+                "connected": True,
+                "last_sync": datetime.now(timezone.utc).isoformat()
+            }
+        ],
+        "total_metrics": len(recent_metrics),
+        "note": "Wearable device integration (Apple Health, Fitbit) can be enabled with OAuth setup"
+    }
+
+
+@api_router.post("/wearables/connect/{device_type}")
+async def connect_wearable_device(
+    device_type: str,
+    request: Request,
+    session_token: Optional[str] = Cookie(None)
+):
+    """Connect a wearable device (placeholder for OAuth flows)"""
+    user = await get_current_user(request, session_token)
+    
+    # Placeholder for device OAuth flows
+    # Apple Health: Uses HealthKit on iOS
+    # Fitbit: Requires Fitbit OAuth 2.0
+    # Google Fit: Requires Google Fit API
+    
+    return {
+        "message": f"Device connection initiated for {device_type}",
+        "user_id": user.user_id,
+        "device_type": device_type,
+        "status": "pending_oauth",
+        "note": "OAuth flow would redirect to device authorization page"
+    }
+
+
+# ===========================
 # MENTAL HEALTH ENDPOINTS
 # ===========================
 
