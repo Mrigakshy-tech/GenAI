@@ -600,6 +600,200 @@ function DrugInteractionChecker() {
   );
 }
 
+
+function MedicalImageAnalysis() {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [imageType, setImageType] = useState("general");
+  const [patientContext, setPatientContext] = useState("");
+  const [analysis, setAnalysis] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please select an image file');
+        return;
+      }
+      
+      // Validate file size (max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        alert('File size must be less than 10MB');
+        return;
+      }
+
+      setSelectedFile(file);
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const analyzeImage = async () => {
+    if (!selectedFile) {
+      alert('Please select an image');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('image_type', imageType);
+      formData.append('patient_context', patientContext);
+
+      const response = await axios.post(
+        `${API}/medical/image-analysis`,
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        }
+      );
+
+      setAnalysis(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to analyze image. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const clearImage = () => {
+    setSelectedFile(null);
+    setImagePreview(null);
+    setAnalysis(null);
+  };
+
+  return (
+    <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6" data-testid="medical-image-analysis">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Upload Medical Image
+            </label>
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors">
+              {imagePreview ? (
+                <div className="space-y-3">
+                  <img 
+                    src={imagePreview} 
+                    alt="Preview" 
+                    className="max-h-48 mx-auto rounded-lg"
+                  />
+                  <p className="text-sm text-gray-600">{selectedFile.name}</p>
+                  <button
+                    onClick={clearImage}
+                    className="text-sm text-red-600 hover:text-red-800"
+                  >
+                    Remove Image
+                  </button>
+                </div>
+              ) : (
+                <label className="cursor-pointer">
+                  <ImageIcon className="h-12 w-12 mx-auto text-gray-400 mb-3" />
+                  <p className="text-gray-600 mb-2">Click to upload or drag and drop</p>
+                  <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    data-testid="image-upload-input"
+                  />
+                </label>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Image Type</label>
+            <select
+              value={imageType}
+              onChange={(e) => setImageType(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              data-testid="image-type-select"
+            >
+              <option value="general">General Medical Image</option>
+              <option value="xray">X-Ray</option>
+              <option value="skin">Skin Condition</option>
+              <option value="lab_report">Lab Report</option>
+              <option value="prescription">Prescription</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Patient Context (Optional)
+            </label>
+            <textarea
+              value={patientContext}
+              onChange={(e) => setPatientContext(e.target.value)}
+              placeholder="Any relevant patient information or symptoms..."
+              rows="3"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              data-testid="patient-context-input"
+            />
+          </div>
+
+          <button
+            onClick={analyzeImage}
+            disabled={loading || !selectedFile}
+            className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+            data-testid="analyze-image-btn"
+          >
+            {loading ? 'Analyzing Image...' : 'Analyze Image'}
+          </button>
+
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+            <p className="text-xs text-yellow-800">
+              ⚠️ <strong>Disclaimer:</strong> This AI analysis is for informational purposes only. 
+              Always consult a qualified healthcare professional for accurate medical diagnosis.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          {analysis ? (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 sm:p-6" data-testid="image-analysis-result">
+              <h3 className="text-lg font-semibold text-blue-900 mb-3">Analysis Results</h3>
+              <div className="space-y-3">
+                <div>
+                  <p className="text-sm text-gray-600">Image: {analysis.filename}</p>
+                  <p className="text-sm text-gray-600 capitalize">Type: {analysis.image_type}</p>
+                </div>
+                <div className="markdown-content">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{analysis.analysis}</ReactMarkdown>
+                </div>
+                {analysis.disclaimer && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-3 mt-4">
+                    <p className="text-xs text-red-800">{analysis.disclaimer}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center h-full text-gray-400">
+              <div className="text-center">
+                <ImageIcon className="h-16 w-16 mx-auto mb-3" />
+                <p>Upload and analyze a medical image</p>
+                <p className="text-sm mt-2">Supports X-rays, skin conditions, lab reports, and more</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 // ===========================
 // MENTAL HEALTH MODULE
 // ===========================
