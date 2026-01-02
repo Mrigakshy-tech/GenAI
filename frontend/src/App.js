@@ -945,25 +945,44 @@ function MentalHealthChat() {
         )}
       </div>
 
-      <div className="flex space-x-2">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-          placeholder="Share what's on your mind..."
-          className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-          data-testid="mental-chat-input"
-        />
-        <button
-          onClick={sendMessage}
-          disabled={loading || !input.trim()}
-          className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
-          data-testid="mental-chat-send-btn"
-        >
-          <Send className="h-5 w-5" />
-          <span>Send</span>
-        </button>
+      <div className="flex flex-col space-y-2">
+        <div className="flex space-x-2">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && !isListening && sendMessage()}
+            placeholder="Share what's on your mind..."
+            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            data-testid="mental-chat-input"
+            disabled={isListening}
+          />
+          <button
+            onClick={toggleVoiceInput}
+            className={`px-4 py-3 rounded-lg transition-colors ${
+              isListening 
+                ? "bg-red-600 text-white hover:bg-red-700 animate-pulse" 
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+            title={isListening ? "Stop recording" : "Start voice input"}
+          >
+            {isListening ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+          </button>
+          <button
+            onClick={sendMessage}
+            disabled={loading || !input.trim() || isListening}
+            className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+            data-testid="mental-chat-send-btn"
+          >
+            <Send className="h-5 w-5" />
+            <span>Send</span>
+          </button>
+        </div>
+        {isListening && (
+          <p className="text-sm text-red-600 text-center animate-pulse">
+            🎤 Listening... Speak your thoughts
+          </p>
+        )}
       </div>
     </div>
   );
