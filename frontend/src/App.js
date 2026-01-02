@@ -222,7 +222,15 @@ function SymptomChecker() {
   };
 
   const analyzeSymptoms = async () => {
-    if (symptoms.length === 0) return;
+    if (symptoms.length === 0) {
+      alert("Please add at least one symptom");
+      return;
+    }
+    
+    if (!duration.trim()) {
+      alert("Please enter the duration of symptoms");
+      return;
+    }
     
     setLoading(true);
     try {
