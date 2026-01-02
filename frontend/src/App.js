@@ -126,9 +126,9 @@ function Dashboard({ user }) {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
         {activeModule === "medical" && <MedicalAssistant />}
-        {activeModule === "mental" && <MentalHealth userId={userId} />}
+        {activeModule === "mental" && <MentalHealth userId={user.user_id} />}
         {activeModule === "diagnosis" && <DiagnosisSupport />}
-        {activeModule === "care" && <PatientCare userId={userId} />}
+        {activeModule === "care" && <PatientCare userId={user.user_id} />}
       </main>
     </div>
   );
