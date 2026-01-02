@@ -16,47 +16,49 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
       <header className="bg-white shadow-md border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg">
-                <Heart className="h-8 w-8 text-white" />
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-1.5 sm:p-2 rounded-lg">
+                <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">HealthCare AI Platform</h1>
-                <p className="text-sm text-gray-600">Comprehensive AI-Powered Healthcare Solutions</p>
+                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">HealthCare AI Platform</h1>
+                <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Comprehensive AI-Powered Healthcare Solutions</p>
               </div>
             </div>
-            <div className="flex items-center space-x-2 text-sm text-gray-600">
+            <div className="flex items-center space-x-2 text-xs sm:text-sm text-gray-600">
               <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span>All Systems Active</span>
+              <span className="hidden sm:inline">All Systems Active</span>
+              <span className="sm:hidden">Active</span>
             </div>
           </div>
         </div>
       </header>
 
       {/* Navigation Tabs */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="bg-white border-b border-gray-200 sticky top-0 z-10 overflow-x-auto">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="flex space-x-1">
             {[
-              { id: "medical", label: "Medical Assistant", icon: Stethoscope, color: "blue" },
-              { id: "mental", label: "Mental Health", icon: Brain, color: "purple" },
-              { id: "diagnosis", label: "Diagnosis Support", icon: Activity, color: "green" },
-              { id: "care", label: "Patient Care", icon: Heart, color: "red" }
+              { id: "medical", label: "Medical Assistant", shortLabel: "Medical", icon: Stethoscope, color: "blue" },
+              { id: "mental", label: "Mental Health", shortLabel: "Mental", icon: Brain, color: "purple" },
+              { id: "diagnosis", label: "Diagnosis Support", shortLabel: "Diagnosis", icon: Activity, color: "green" },
+              { id: "care", label: "Patient Care", shortLabel: "Care", icon: Heart, color: "red" }
             ].map((module) => (
               <button
                 key={module.id}
                 onClick={() => setActiveModule(module.id)}
                 data-testid={`tab-${module.id}`}
-                className={`flex items-center space-x-2 px-6 py-4 font-medium transition-all ${
+                className={`flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 md:px-6 py-3 sm:py-4 font-medium transition-all text-sm sm:text-base whitespace-nowrap ${
                   activeModule === module.id
                     ? `text-${module.color}-600 border-b-2 border-${module.color}-600 bg-${module.color}-50`
                     : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                 }`}
               >
-                <module.icon className="h-5 w-5" />
-                <span>{module.label}</span>
+                <module.icon className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="hidden sm:inline">{module.label}</span>
+                <span className="sm:hidden">{module.shortLabel}</span>
               </button>
             ))}
           </div>
@@ -64,7 +66,7 @@ function App() {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
         {activeModule === "medical" && <MedicalAssistant />}
         {activeModule === "mental" && <MentalHealth userId={userId} />}
         {activeModule === "diagnosis" && <DiagnosisSupport />}
