@@ -1253,7 +1253,7 @@ function TreatmentRecommendation() {
             <div className="bg-green-50 border border-green-200 rounded-lg p-6" data-testid="treatment-plan-result">
               <h3 className="text-lg font-semibold text-green-900 mb-3">Treatment Plan</h3>
               <div className="markdown-content">
-                <ReactMarkdown>{treatmentPlan}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{treatmentPlan}</ReactMarkdown>
               </div>
             </div>
           ) : (
