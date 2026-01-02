@@ -27,11 +27,6 @@ function App() {
                 <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Comprehensive AI-Powered Healthcare Solutions</p>
               </div>
             </div>
-            <div className="flex items-center space-x-2 text-xs sm:text-sm text-gray-600">
-              <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="hidden sm:inline">All Systems Active</span>
-              <span className="sm:hidden">Active</span>
-            </div>
           </div>
         </div>
       </header>
