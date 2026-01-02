@@ -142,12 +142,12 @@ function MedicalChat() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6" data-testid="medical-chat">
-      <div className="space-y-4 h-96 overflow-y-auto mb-4 p-4 bg-gray-50 rounded-lg">
+    <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6" data-testid="medical-chat">
+      <div className="space-y-4 h-64 sm:h-80 md:h-96 overflow-y-auto mb-4 p-3 sm:p-4 bg-gray-50 rounded-lg">
         {messages.length === 0 && (
-          <div className="text-center text-gray-500 mt-20">
-            <MessageCircle className="h-12 w-12 mx-auto mb-3 text-gray-400" />
-            <p>Start a conversation with your AI medical assistant</p>
+          <div className="text-center text-gray-500 mt-12 sm:mt-20">
+            <MessageCircle className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-3 text-gray-400" />
+            <p className="text-sm sm:text-base">Start a conversation with your AI medical assistant</p>
           </div>
         )}
         {messages.map((msg, idx) => (
@@ -156,7 +156,7 @@ function MedicalChat() {
             className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-2xl px-4 py-3 rounded-lg ${
+              className={`max-w-[85%] sm:max-w-2xl px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm sm:text-base ${
                 msg.role === "user"
                   ? "bg-blue-600 text-white"
                   : msg.role === "error"
@@ -170,7 +170,7 @@ function MedicalChat() {
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="bg-white border border-gray-200 px-4 py-3 rounded-lg">
+            <div className="bg-white border border-gray-200 px-3 sm:px-4 py-2 sm:py-3 rounded-lg">
               <div className="flex space-x-2">
                 <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"></div>
                 <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
@@ -181,23 +181,23 @@ function MedicalChat() {
         )}
       </div>
 
-      <div className="flex space-x-2">
+      <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && sendMessage()}
           placeholder="Ask about symptoms, conditions, treatments..."
-          className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="flex-1 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
           data-testid="medical-chat-input"
         />
         <button
           onClick={sendMessage}
           disabled={loading || !input.trim()}
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+          className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 text-sm sm:text-base"
           data-testid="medical-chat-send-btn"
         >
-          <Send className="h-5 w-5" />
+          <Send className="h-4 w-4 sm:h-5 sm:w-5" />
           <span>Send</span>
         </button>
       </div>
