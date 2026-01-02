@@ -3,6 +3,7 @@ import "@/App.css";
 import axios from "axios";
 import { Activity, Brain, Stethoscope, Heart, MessageCircle, Pill, Calendar, TrendingUp, AlertCircle, CheckCircle, Send, Upload, Plus, X } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
