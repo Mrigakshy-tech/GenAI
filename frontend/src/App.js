@@ -61,6 +61,35 @@ function Dashboard({ user }) {
                 <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Comprehensive AI-Powered Healthcare Solutions</p>
               </div>
             </div>
+            
+            {/* User Profile and Logout */}
+            <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2">
+                {user.picture ? (
+                  <img 
+                    src={user.picture} 
+                    alt={user.name}
+                    className="w-8 h-8 rounded-full border-2 border-blue-500"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
+                    <User className="w-5 h-5 text-white" />
+                  </div>
+                )}
+                <div className="hidden sm:block">
+                  <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                  <p className="text-xs text-gray-500">{user.email}</p>
+                </div>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                title="Logout"
+                data-testid="logout-btn"
+              >
+                <LogOut className="h-5 w-5" />
+              </button>
+            </div>
           </div>
         </div>
       </header>
