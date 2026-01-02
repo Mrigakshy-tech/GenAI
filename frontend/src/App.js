@@ -660,12 +660,12 @@ function MoodTracker({ userId }) {
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3">How are you feeling?</label>
-            <div className="flex justify-between gap-2">
+            <div className="flex justify-start gap-3">
               {Object.entries(moodEmojis).map(([key, emoji]) => (
                 <button
                   key={key}
                   onClick={() => setMood(key)}
-                  className={`text-3xl p-2 rounded-lg transition-all ${
+                  className={`text-2xl p-2 rounded-lg transition-all ${
                     mood === key ? "bg-purple-100 scale-105" : "hover:bg-gray-100"
                   }`}
                   data-testid={`mood-${key}`}
@@ -674,7 +674,7 @@ function MoodTracker({ userId }) {
                 </button>
               ))}
             </div>
-            <p className="text-center mt-2 text-sm text-gray-600 capitalize">
+            <p className="text-left mt-2 text-sm text-gray-600 capitalize">
               {mood === "stressed" ? <span className="font-bold">{mood}</span> : mood}
             </p>
           </div>
