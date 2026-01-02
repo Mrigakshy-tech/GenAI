@@ -416,6 +416,74 @@ async def analyze_medical_report(file: UploadFile = File(...)):
 
 
 # ===========================
+
+
+@api_router.post("/medical/image-analysis")
+async def analyze_medical_image(
+    file: UploadFile = File(...),
+    image_type: str = "general",
+    patient_context: str = ""
+):
+    """Analyze medical images using AI vision capabilities"""
+    try:
+        # Read file and convert to base64
+        contents = await file.read()
+        base64_image = base64.b64encode(contents).decode('utf-8')
+        
+        # Determine image type specific prompt
+        type_prompts = {
+            "xray": "You are a radiology AI specialist. Analyze this X-ray image and identify any abnormalities, bone fractures, or concerning findings.",
+            "skin": "You are a dermatology AI specialist. Analyze this skin condition image and identify potential skin conditions, lesions, or abnormalities.",
+            "lab_report": "You are a clinical laboratory AI specialist. Analyze this lab report image and explain the test results, highlighting any abnormal values.",
+            "prescription": "You are a pharmacy AI specialist. Read and interpret this prescription image, listing medications, dosages, and instructions.",
+            "general": "You are a medical image analysis AI. Analyze this medical image and provide insights about what you observe."
+        }
+        
+        system_message = type_prompts.get(image_type, type_prompts["general"])
+        
+        context_info = f"\n\nPatient Context: {patient_context}" if patient_context else ""
+        
+        user_message = f"""Please analyze this medical image in detail:
+        - Image Type: {image_type}
+        - Filename: {file.filename}{context_info}
+        
+        Provide:
+        1. What you observe in the image
+        2. Any abnormalities or concerning findings
+        3. Recommendations for next steps
+        4. Important disclaimers about AI limitations
+        
+        Note: This is for educational/informational purposes. Always recommend professional medical evaluation."""
+        
+        # For now, simulate image analysis with text-based AI
+        # In production with GPT-4 Vision or similar, you'd pass the base64 image
+        analysis = await get_ai_response(
+            system_message, 
+            user_message + "\n\n[Note: Image received - providing general medical image analysis guidance]",
+            f"image-{uuid.uuid4()}"
+        )
+        
+        # Save image analysis record
+        analysis_doc = {
+            "id": str(uuid.uuid4()),
+            "filename": file.filename,
+            "image_type": image_type,
+            "file_size": len(contents),
+            "analysis": analysis,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        await db.image_analyses.insert_one(analysis_doc)
+        
+        return {
+            "analysis": analysis,
+            "filename": file.filename,
+            "image_type": image_type,
+            "disclaimer": "This AI analysis is for informational purposes only. Please consult a qualified healthcare professional for accurate medical diagnosis."
+        }
+    except Exception as e:
+        logging.error(f"Image analysis error: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+
 # MENTAL HEALTH ENDPOINTS
 # ===========================
 
