@@ -144,19 +144,19 @@ function MedicalAssistant() {
     <div className="space-y-6" data-testid="medical-assistant-module">
       <div className="bg-white rounded-xl shadow-lg p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">AI Medical Assistant</h2>
-        <div className="flex space-x-4 border-b border-gray-200">
-          {["chat", "symptoms", "drugs"].map((tab) => (
+        <div className="flex space-x-4 border-b border-gray-200 overflow-x-auto">
+          {["chat", "symptoms", "drugs", "image"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               data-testid={`medical-tab-${tab}`}
-              className={`px-4 py-2 font-medium capitalize ${
+              className={`px-4 py-2 font-medium capitalize whitespace-nowrap ${
                 activeTab === tab
                   ? "text-blue-600 border-b-2 border-blue-600"
                   : "text-gray-600 hover:text-gray-900"
               }`}
             >
-              {tab === "drugs" ? "Drug Interactions" : tab}
+              {tab === "drugs" ? "Drug Interactions" : tab === "image" ? "Image Analysis" : tab}
             </button>
           ))}
         </div>
@@ -165,6 +165,7 @@ function MedicalAssistant() {
       {activeTab === "chat" && <MedicalChat />}
       {activeTab === "symptoms" && <SymptomChecker />}
       {activeTab === "drugs" && <DrugInteractionChecker />}
+      {activeTab === "image" && <MedicalImageAnalysis />}
     </div>
   );
 }
