@@ -673,7 +673,9 @@ function MoodTracker({ userId }) {
                 </button>
               ))}
             </div>
-            <p className="text-center mt-2 text-sm text-gray-600 capitalize">{mood}</p>
+            <p className="text-center mt-2 text-sm text-gray-600 capitalize">
+              {mood === "stressed" ? <span className="font-bold">{mood}</span> : mood}
+            </p>
           </div>
 
           <div>
