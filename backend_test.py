@@ -282,11 +282,7 @@ class MediGenixAPITester:
                      f"Dashboard data: medications={len(data.get('medications', []))}, metrics={len(data.get('health_metrics', []))}, moods={len(data.get('mood_history', []))}" if success else str(data))
         
         # Test recovery guidance
-        recovery_data = {
-            "condition": "Type 2 Diabetes",
-            "stage": "newly diagnosed"
-        }
-        success, data = self.make_request('POST', 'care/recovery-guidance', recovery_data)
+        success, data = self.make_request('GET', 'care/recovery-guidance?condition=Type 2 Diabetes&stage=newly diagnosed')
         self.log_test("CARE", "Recovery Guidance", success,
                      f"Guidance length: {len(data.get('guidance', ''))}" if success else str(data))
         
