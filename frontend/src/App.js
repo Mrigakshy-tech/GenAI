@@ -1004,7 +1004,7 @@ function DiagnosisAnalysis() {
             <div className="bg-green-50 border border-green-200 rounded-lg p-6" data-testid="diagnosis-result">
               <h3 className="text-lg font-semibold text-green-900 mb-3">Diagnosis Analysis</h3>
               <div className="markdown-content">
-                <ReactMarkdown>{diagnosis}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{diagnosis}</ReactMarkdown>
               </div>
             </div>
           ) : (
