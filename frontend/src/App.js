@@ -286,18 +286,33 @@ function MedicalChat() {
       </div>
 
       <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-          placeholder="Ask about symptoms, conditions, treatments..."
-          className="flex-1 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
-          data-testid="medical-chat-input"
-        />
+        <div className="flex flex-1 space-x-2">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && !isListening && sendMessage()}
+            placeholder="Ask about symptoms, conditions, treatments..."
+            className="flex-1 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+            data-testid="medical-chat-input"
+            disabled={isListening}
+          />
+          <button
+            onClick={toggleVoiceInput}
+            className={`px-3 sm:px-4 py-2 sm:py-3 rounded-lg transition-colors ${
+              isListening 
+                ? "bg-red-600 text-white hover:bg-red-700 animate-pulse" 
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+            title={isListening ? "Stop recording" : "Start voice input"}
+            data-testid="voice-input-btn"
+          >
+            {isListening ? <MicOff className="h-4 w-4 sm:h-5 sm:w-5" /> : <Mic className="h-4 w-4 sm:h-5 sm:w-5" />}
+          </button>
+        </div>
         <button
           onClick={sendMessage}
-          disabled={loading || !input.trim()}
+          disabled={loading || !input.trim() || isListening}
           className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 text-sm sm:text-base"
           data-testid="medical-chat-send-btn"
         >
@@ -305,6 +320,11 @@ function MedicalChat() {
           <span>Send</span>
         </button>
       </div>
+      {isListening && (
+        <p className="text-sm text-red-600 text-center animate-pulse">
+          🎤 Listening... Speak now
+        </p>
+      )}
     </div>
   );
 }
