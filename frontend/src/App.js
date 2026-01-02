@@ -728,7 +728,9 @@ function MoodTracker({ userId }) {
                   <div className="flex items-center space-x-3">
                     <span className="text-2xl">{moodEmojis[entry.mood]}</span>
                     <div>
-                      <p className="font-medium capitalize">{entry.mood}</p>
+                      <p className={`font-medium capitalize ${entry.mood === "stressed" ? "font-bold" : ""}`}>
+                        {entry.mood}
+                      </p>
                       <p className="text-sm text-gray-500">Intensity: {entry.intensity}/10</p>
                     </div>
                   </div>
