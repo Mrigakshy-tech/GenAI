@@ -455,7 +455,9 @@ function DrugInteractionChecker() {
           {analysis ? (
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-6" data-testid="drug-interaction-result">
               <h3 className="text-lg font-semibold text-purple-900 mb-3">Interaction Analysis</h3>
-              <div className="text-gray-700 whitespace-pre-wrap">{analysis}</div>
+              <div className="markdown-content">
+                <ReactMarkdown>{analysis}</ReactMarkdown>
+              </div>
             </div>
           ) : (
             <div className="flex items-center justify-center h-full text-gray-400">
