@@ -328,12 +328,18 @@ function SymptomChecker() {
 
           <button
             onClick={analyzeSymptoms}
-            disabled={loading || symptoms.length === 0}
+            disabled={loading || symptoms.length === 0 || !duration.trim()}
             className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
             data-testid="analyze-symptoms-btn"
           >
             {loading ? "Analyzing..." : "Analyze Symptoms"}
           </button>
+          {symptoms.length === 0 && (
+            <p className="text-sm text-red-600 mt-2">⚠️ Please add at least one symptom</p>
+          )}
+          {symptoms.length > 0 && !duration.trim() && (
+            <p className="text-sm text-red-600 mt-2">⚠️ Please enter symptom duration</p>
+          )}
         </div>
 
         <div>
