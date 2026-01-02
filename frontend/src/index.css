@@ -18,8 +18,15 @@ code {
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
+}
+
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
 }
 
 ::-webkit-scrollbar-track {
@@ -56,6 +63,13 @@ code {
 .markdown-content {
   color: #374151;
   line-height: 1.7;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .markdown-content {
+    font-size: 1rem;
+  }
 }
 
 .markdown-content h1,
@@ -63,21 +77,49 @@ code {
 .markdown-content h3,
 .markdown-content h4 {
   font-weight: 700;
-  margin-top: 1.5em;
-  margin-bottom: 0.75em;
+  margin-top: 1.25em;
+  margin-bottom: 0.5em;
   color: #1f2937;
 }
 
+@media (min-width: 640px) {
+  .markdown-content h1,
+  .markdown-content h2,
+  .markdown-content h3,
+  .markdown-content h4 {
+    margin-top: 1.5em;
+    margin-bottom: 0.75em;
+  }
+}
+
 .markdown-content h1 {
-  font-size: 1.5em;
+  font-size: 1.25em;
+}
+
+@media (min-width: 640px) {
+  .markdown-content h1 {
+    font-size: 1.5em;
+  }
 }
 
 .markdown-content h2 {
-  font-size: 1.3em;
+  font-size: 1.15em;
+}
+
+@media (min-width: 640px) {
+  .markdown-content h2 {
+    font-size: 1.3em;
+  }
 }
 
 .markdown-content h3 {
-  font-size: 1.15em;
+  font-size: 1.05em;
+}
+
+@media (min-width: 640px) {
+  .markdown-content h3 {
+    font-size: 1.15em;
+  }
 }
 
 .markdown-content h4 {
@@ -85,7 +127,13 @@ code {
 }
 
 .markdown-content p {
-  margin-bottom: 1em;
+  margin-bottom: 0.875em;
+}
+
+@media (min-width: 640px) {
+  .markdown-content p {
+    margin-bottom: 1em;
+  }
 }
 
 .markdown-content strong {
@@ -99,8 +147,16 @@ code {
 
 .markdown-content ul,
 .markdown-content ol {
-  margin-left: 1.5em;
-  margin-bottom: 1em;
+  margin-left: 1.25em;
+  margin-bottom: 0.875em;
+}
+
+@media (min-width: 640px) {
+  .markdown-content ul,
+  .markdown-content ol {
+    margin-left: 1.5em;
+    margin-bottom: 1em;
+  }
 }
 
 .markdown-content ul {
@@ -112,23 +168,43 @@ code {
 }
 
 .markdown-content li {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.375em;
+}
+
+@media (min-width: 640px) {
+  .markdown-content li {
+    margin-bottom: 0.5em;
+  }
 }
 
 .markdown-content code {
   background-color: #f3f4f6;
-  padding: 0.2em 0.4em;
+  padding: 0.15em 0.3em;
   border-radius: 0.25em;
-  font-size: 0.9em;
+  font-size: 0.85em;
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+@media (min-width: 640px) {
+  .markdown-content code {
+    padding: 0.2em 0.4em;
+    font-size: 0.9em;
+  }
 }
 
 .markdown-content pre {
   background-color: #f3f4f6;
-  padding: 1em;
+  padding: 0.75em;
   border-radius: 0.5em;
   overflow-x: auto;
-  margin-bottom: 1em;
+  margin-bottom: 0.875em;
+}
+
+@media (min-width: 640px) {
+  .markdown-content pre {
+    padding: 1em;
+    margin-bottom: 1em;
+  }
 }
 
 .markdown-content pre code {
@@ -137,18 +213,33 @@ code {
 }
 
 .markdown-content blockquote {
-  border-left: 4px solid #d1d5db;
-  padding-left: 1em;
+  border-left: 3px solid #d1d5db;
+  padding-left: 0.75em;
   margin-left: 0;
-  margin-bottom: 1em;
+  margin-bottom: 0.875em;
   font-style: italic;
   color: #6b7280;
 }
 
+@media (min-width: 640px) {
+  .markdown-content blockquote {
+    border-left: 4px solid #d1d5db;
+    padding-left: 1em;
+    margin-bottom: 1em;
+  }
+}
+
 .markdown-content hr {
   border: none;
-  border-top: 2px solid #e5e7eb;
-  margin: 2em 0;
+  border-top: 1px solid #e5e7eb;
+  margin: 1.5em 0;
+}
+
+@media (min-width: 640px) {
+  .markdown-content hr {
+    border-top: 2px solid #e5e7eb;
+    margin: 2em 0;
+  }
 }
 
 .markdown-content a {
@@ -158,4 +249,17 @@ code {
 
 .markdown-content a:hover {
   color: #1d4ed8;
+}
+
+/* Responsive utilities */
+@media (max-width: 639px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .show-on-mobile {
+    display: none !important;
+  }
 }
