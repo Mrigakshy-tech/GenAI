@@ -349,7 +349,7 @@ function SymptomChecker() {
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-6" data-testid="symptom-analysis-result">
               <h3 className="text-lg font-semibold text-blue-900 mb-3">Analysis Results</h3>
               <div className="markdown-content">
-                <ReactMarkdown>{analysis}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{analysis}</ReactMarkdown>
               </div>
             </div>
           ) : (
@@ -457,7 +457,7 @@ function DrugInteractionChecker() {
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-6" data-testid="drug-interaction-result">
               <h3 className="text-lg font-semibold text-purple-900 mb-3">Interaction Analysis</h3>
               <div className="markdown-content">
-                <ReactMarkdown>{analysis}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{analysis}</ReactMarkdown>
               </div>
             </div>
           ) : (
