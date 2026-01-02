@@ -500,7 +500,7 @@ async def get_recovery_guidance(condition: str, stage: str):
 @api_router.get("/")
 async def root():
     return {
-        "message": "Healthcare GenAI Platform API",
+        "message": "MediGenix AI Platform API",
         "version": "1.0.0",
         "modules": [
             "Medical Assistant",
