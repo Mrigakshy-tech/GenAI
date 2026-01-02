@@ -23,7 +23,7 @@ function App() {
                 <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">HealthCare AI Platform</h1>
+                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">MediGenix AI</h1>
                 <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Comprehensive AI-Powered Healthcare Solutions</p>
               </div>
             </div>
