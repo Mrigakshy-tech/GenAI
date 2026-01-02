@@ -1316,15 +1316,6 @@ function CareDashboard({ userId }) {
         </div>
       </div>
 
-      {dashboardData?.ai_summary && (
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">AI Health Summary</h3>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <p className="text-gray-700 whitespace-pre-wrap">{dashboardData.ai_summary}</p>
-          </div>
-        </div>
-      )}
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white rounded-xl shadow-lg p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-3">Recent Medications</h3>
